@@ -1,16 +1,18 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$k8swork-429204/microservice2:latest', '.']
+  args: ['build', '-t', 'gcr.io/$k8swork-429204/microservice1:latest', '.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$k8swork-429204/microservice2:latest']
+  args: ['push', 'gcr.io/$k8swork-429204/microservice1:latest']
 - name: 'gcr.io/cloud-builders/kubectl'
   args:
   - 'set'
   - 'image'
-  - 'deployment/microservice2'
-  - 'microservice2=gcr.io/$k8swork-429204/microservice2:latest'
+  - 'deployment/microservice1'
+  - 'microservice1=gcr.io/$k8swork-429204/microservice1:latest'
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1'
 images:
-- 'gcr.io/$k8swork-429204/microservice2:latest'
+- 'gcr.io/$k8swork-429204/microservice1:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY
