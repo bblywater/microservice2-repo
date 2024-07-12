@@ -25,27 +25,24 @@ def sum_product():
             file.seek(0)
             file_content = file.read()
             file.seek(0)
-            # Strip spaces from headers
             reader.fieldnames = [field.strip() for field in reader.fieldnames]
             if reader.fieldnames is None or 'product' not in reader.fieldnames or 'amount' not in reader.fieldnames:
-                return jsonify({"file": file_name, "error": "Input file not in CSV format.1", "file_content": file_content})
+                return jsonify({"file": file_name, "error": "Input file not in CSV format."})
 
             for row in reader:
-                # Strip spaces from row keys
                 row = {key.strip(): value for key, value in row.items()}
-                # Ensure each row has the correct format
                 if 'product' not in row or 'amount' not in row:
-                    return jsonify({"file": file_name, "error": "Input file not in CSV format.2", "file_content": file_content})
+                    return jsonify({"file": file_name, "error": "Input file not in CSV format."})
                 if row['product'] == product:
                     try:
                         amount = int(row['amount'])
                     except ValueError:
-                        return jsonify({"file": file_name, "error": "Input file not in CSV format.3", "file_content": file_content})
+                        return jsonify({"file": file_name, "error": "Input file not in CSV format."})
                     total_sum += amount
 
         return jsonify({"file": file_name, "sum": total_sum})
     except Exception as e:
-        return jsonify({"file": file_name, "error": f"Error processing file: {str(e)}", "file_content": file_content}), 500
+        return jsonify({"file": file_name, "error": f"Error processing file: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
