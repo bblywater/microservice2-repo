@@ -22,18 +22,24 @@ def sum_product():
     try:
         with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
+            # Ensure the CSV has the correct headers
             if reader.fieldnames is None or 'product' not in reader.fieldnames or 'amount' not in reader.fieldnames:
                 return jsonify({"file": file_name, "error": "Input file not in CSV format."})
 
             for row in reader:
+                # Ensure each row has the correct format
+                if 'product' not in row or 'amount' not in row:
+                    return jsonify({"file": file_name, "error": "Input file not in CSV format."})
                 if row['product'] == product:
-                    if not row['amount'].isdigit():
+                    try:
+                        amount = int(row['amount'])
+                    except ValueError:
                         return jsonify({"file": file_name, "error": "Input file not in CSV format."})
-                    total_sum += int(row['amount'])
+                    total_sum += amount
 
         return jsonify({"file": file_name, "sum": total_sum})
     except Exception as e:
-        return jsonify({"file": file_name, "error": str(e)})
+        return jsonify({"file": file_name, "error": f"Error processing file: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=5000)
