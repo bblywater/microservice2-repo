@@ -25,11 +25,14 @@ def sum_product():
             file.seek(0)
             file_content = file.read()
             file.seek(0)
-            # Ensure the CSV has the correct headers
+            # Strip spaces from headers
+            reader.fieldnames = [field.strip() for field in reader.fieldnames]
             if reader.fieldnames is None or 'product' not in reader.fieldnames or 'amount' not in reader.fieldnames:
                 return jsonify({"file": file_name, "error": "Input file not in CSV format.1", "file_content": file_content})
 
             for row in reader:
+                # Strip spaces from row keys
+                row = {key.strip(): value for key, value in row.items()}
                 # Ensure each row has the correct format
                 if 'product' not in row or 'amount' not in row:
                     return jsonify({"file": file_name, "error": "Input file not in CSV format.2", "file_content": file_content})
