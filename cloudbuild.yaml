@@ -15,5 +15,5 @@ steps:
 images:
 - 'gcr.io/$PROJECT_ID/microservice2:latest'
 options:
-  logging: CLOUD_LOGGING_ONLY
-logsBucket: "gs://your-build-logs-bucket/"
+  logging: LOGGING_AND_STORAGE
+  logsBucket: "gs://your-build-logs-bucket/"
